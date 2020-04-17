@@ -59,7 +59,12 @@ app.get("/compose", (req, res) => {
 });
 
 app.post("/compose", (req, res) => {
-  array.push(req.body);
+  var obj = req.body;
+  var str = obj.title;
+  str = str.replace(/\s+/g, "-").toLowerCase();
+  obj.href = "/" + str;
+  array.push(obj);
+  console.log(obj);
   res.redirect("/");
 });
 
@@ -68,7 +73,6 @@ app.get("/:pos", function (req, res) {
   topic = topic.replace(/-/g, " ");
   array.forEach(function (el) {
     if (el.title.toLowerCase() === topic) {
-      console.log(el);
       res.render("post", el);
     }
   });
