@@ -64,7 +64,6 @@ app.post("/compose", (req, res) => {
   str = str.replace(/\s+/g, "-").toLowerCase();
   obj.href = "/" + str;
   array.push(obj);
-  console.log(obj);
   res.redirect("/");
 });
 
