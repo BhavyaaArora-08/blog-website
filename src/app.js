@@ -64,8 +64,14 @@ app.post("/compose", (req, res) => {
 });
 
 app.get("/:pos", function (req, res) {
-  const topic = req.params.pos;
-  if (array.some((array) => array["title"] === topic)) console.log(topic);
+  var topic = req.params.pos;
+  topic = topic.replace(/-/g, " ");
+  array.forEach(function (el) {
+    if (el.title.toLowerCase() === topic) {
+      console.log(el);
+      res.render("post", el);
+    }
+  });
 });
 
 app.listen("3000", () => {
