@@ -63,6 +63,11 @@ app.post("/compose", (req, res) => {
   res.redirect("/");
 });
 
+app.get("/:pos", function (req, res) {
+  const topic = req.params.pos;
+  if (array.some((array) => array["title"] === topic)) console.log(topic);
+});
+
 app.listen("3000", () => {
   console.log("server is started and is running on port 3000");
 });

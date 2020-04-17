@@ -10,7 +10,6 @@
 
 <body>
     {{>header}}
-
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <div class="container">
@@ -21,7 +20,7 @@
         <div>
             <h1> {{title}} </h1>
             <span id="vis"> {{trimString post}}</span>
-            <span style="display: hidden;" id="hidden"> {{ post }} </span>
+            <span style="display: none;" id="hidden"> {{ post }} </span>
             <a style="cursor: pointer;" id="buttonId">Read More...</a>
         </div>
         {{/each}}
@@ -36,11 +35,3 @@
 </body>
 
 </html>
-
-
-{{!-- const vis = document.getElementById("vis");
-                    const hidden = document.getElementById("hidden");
-                    vis.style.display = "none";
-                    hidden.style.display = "";
-                    e.innerText = "Read Less";
-                    return false; --}}

@@ -3,7 +3,6 @@
 // var compiled = handlebars.compile(myTemplate);
 
 $("#buttonId").click(function () {
-  console.log("hey");
   if ($("#buttonId").text() == "Read More...") {
     $("#vis").hide();
     $("#hidden").show();
