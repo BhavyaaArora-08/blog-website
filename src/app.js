@@ -5,6 +5,10 @@ const path = require("path");
 var jsdom = require("jsdom");
 $ = require("jquery")(new jsdom.JSDOM().window);
 
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+const _ = require("lodash");
+
 const app = express();
 
 app.set("view engine", "hbs");
@@ -42,8 +46,31 @@ hbs.registerHelper("trimString", function (passedString) {
 //my posts
 var array = [];
 
+mongoose.connect("mongodb://127.0.0.1:27017/blogWebsiteDB", {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true,
+});
+
+const Blog = mongoose.model("Blog", {
+  title: {
+    type: String,
+    required: true,
+  },
+  body: {
+    type: String,
+    required: true,
+  },
+  href: {
+    type: String,
+    required: true,
+  },
+});
+
 app.get("/", (req, res) => {
-  res.render("index", { data: homeStartingContent, array: array });
+  Blog.find({}, (err, result) => {
+    res.render("index", { data: homeStartingContent, array: result });
+  });
 });
 
 app.get("/about", (req, res) => {
@@ -61,19 +88,26 @@ app.get("/compose", (req, res) => {
 app.post("/compose", (req, res) => {
   var obj = req.body;
   var str = obj.title;
+  var body = obj.post;
   str = str.replace(/\s+/g, "-").toLowerCase();
-  obj.href = "/" + str;
-  array.push(obj);
+  str = _.capitalize(str);
+  var href = "/" + str + "/favicon.ico";
+  const item = new Blog({
+    title: str,
+    body,
+    href,
+  });
+  item.save();
   res.redirect("/");
 });
 
-app.get("/:pos", function (req, res) {
+app.get("/:pos/favicon.ico", function (req, res) {
   var topic = req.params.pos;
   topic = topic.replace(/-/g, " ");
-  array.forEach(function (el) {
-    if (el.title.toLowerCase() === topic) {
-      res.render("post", el);
-    }
+  console.log(topic);
+  Blog.findOne({ title: topic }, (err, result) => {
+    console.log(result);
+    res.render("post", { title: result.title, post: result.body });
   });
 });
 
